@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8456C81820B2CC810019F687 /* RCTContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8456C81720B2CC810019F687 /* RCTContactsManager.m */; };
 		B63FC3151FEA3AD20051B2A4 /* RCTContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = B63FC3141FEA3AD20051B2A4 /* RCTContacts.m */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +25,8 @@
 
 /* Begin PBXFileReference section */
 		1441618E1BD0A79300FA4F59 /* libRCTContacts.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRCTContacts.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8456C81720B2CC810019F687 /* RCTContactsManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTContactsManager.m; sourceTree = "<group>"; };
+		8456C81920B2CEE20019F687 /* RCTContactsManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTContactsManager.h; sourceTree = "<group>"; };
 		B63FC3131FEA3AD20051B2A4 /* RCTContacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTContacts.h; sourceTree = "<group>"; };
 		B63FC3141FEA3AD20051B2A4 /* RCTContacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTContacts.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -44,6 +47,8 @@
 			children = (
 				B63FC3131FEA3AD20051B2A4 /* RCTContacts.h */,
 				B63FC3141FEA3AD20051B2A4 /* RCTContacts.m */,
+				8456C81920B2CEE20019F687 /* RCTContactsManager.h */,
+				8456C81720B2CC810019F687 /* RCTContactsManager.m */,
 			);
 			path = RCTContacts;
 			sourceTree = "<group>";
@@ -120,6 +125,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8456C81820B2CC810019F687 /* RCTContactsManager.m in Sources */,
 				B63FC3151FEA3AD20051B2A4 /* RCTContacts.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

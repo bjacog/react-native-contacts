@@ -383,26 +383,72 @@ RCT_EXPORT_METHOD(openContactForm:(NSDictionary *)contactData callback:(RCTRespo
     CNMutableContact * contact = [[CNMutableContact alloc] init];
 
     [self updateRecord:contact withData:contactData];
-
-    CNContactViewController *controller = [CNContactViewController viewControllerForNewContact:contact];
-
-    controller.delegate = self;
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UINavigationController* navigation = [[UINavigationController alloc] initWithRootViewController:controller];
-        UINavigationController *viewController = (UINavigationController*)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
-        [viewController presentViewController:navigation animated:YES completion:nil];
-
-        NSDictionary *contactDict = [self contactToDictionary:contact withThumbnails:false];
-
-        callback(@[[NSNull null], contactDict]);
-    });
-
+    
+    /* FIND FOR UPDATE */
+    
+    NSError* contactError;
+    NSString* recordID = [contactData valueForKey:@"recordID"];
+    CNContactViewController *controller;
+    controller.allowsActions = YES;
+    controller.allowsEditing = YES;
+    if (recordID) {
+        @try {
+            NSArray * keysToFetch =@[
+                                     CNContactEmailAddressesKey,
+                                     CNContactPhoneNumbersKey,
+                                     CNContactFamilyNameKey,
+                                     CNContactGivenNameKey,
+                                     CNContactMiddleNameKey,
+                                     CNContactPostalAddressesKey,
+                                     CNContactOrganizationNameKey,
+                                     CNContactJobTitleKey,
+                                     CNContactImageDataAvailableKey,
+                                     CNContactThumbnailImageDataKey,
+                                     CNContactImageDataKey,
+                                     CNContactBirthdayKey,
+                                     CNContactViewController.descriptorForRequiredKeys
+                                     ];
+            CNMutableContact* record = [[contactStore unifiedContactWithIdentifier:recordID keysToFetch:keysToFetch error:&contactError] mutableCopy];
+            CNContactViewController *controller = [CNContactViewController viewControllerForContact:record];
+            controller.delegate = self;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UINavigationController* navigation = [[UINavigationController alloc] initWithRootViewController:controller];
+                UINavigationController *viewController = (UINavigationController*)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
+                
+                [viewController presentViewController:navigation animated:YES completion:nil];
+                
+                NSDictionary *contactDict = [self contactToDictionary:contact withThumbnails:false];
+                
+                callback(@[[NSNull null], contactDict]);
+            });
+            
+        } @catch (NSException *exception) {
+            callback(@[[exception description], [NSNull null]]);
+        }
+    } else {
+        CNContactViewController *controller = [CNContactViewController viewControllerForNewContact:contact];
+        controller.delegate = self;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UINavigationController* navigation = [[UINavigationController alloc] initWithRootViewController:controller];
+            UINavigationController *viewController = (UINavigationController*)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
+            [viewController presentViewController:navigation animated:YES completion:nil];
+            
+            NSDictionary *contactDict = [self contactToDictionary:contact withThumbnails:false];
+            
+            callback(@[[NSNull null], contactDict]);
+        });
+    }
 }
 
 //dismiss open contact page after done or cancel is clicked
 - (void)contactViewController:(CNContactViewController *)viewController didCompleteWithContact:(CNContact *)contact {
     [viewController dismissViewControllerAnimated:YES completion:nil];
+    if (contact) {
+        NSDictionary *contactDict = [self contactToDictionary:contact withThumbnails:false];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"contactChanged" object:contact userInfo:contactDict];
+    }
 }
 
 RCT_EXPORT_METHOD(updateContact:(NSDictionary *)contactData callback:(RCTResponseSenderBlock)callback)

@@ -30,5 +30,8 @@
     "Harry Moreno <morenoh149@gmail.com> (http://harrymoreno.com/)",
     "Nick Pomfret"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+	"react-native": "0.47.1"
+  }
 }
