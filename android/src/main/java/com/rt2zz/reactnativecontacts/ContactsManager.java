@@ -164,6 +164,7 @@ public class ContactsManager extends ReactContextBaseJavaModule {
             editIntent.setDataAndType(mSelectedContactUri, ContactsContract.Contacts.CONTENT_ITEM_TYPE);
 
             Context context = getReactApplicationContext();
+            editIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(editIntent);
 
             return;
