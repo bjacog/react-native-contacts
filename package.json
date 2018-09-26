@@ -31,7 +31,7 @@
     "Nick Pomfret"
   ],
   "license": "MIT",
-  "dependencies": {
-	"react-native": "0.55.4"
+  "peerDependencies": {
+	"react-native": "0.*"
   }
 }
